@@ -21,7 +21,7 @@ def get_route(route_id):
     return jsonify({'message': 'Route not found'}), 404
 
 @routes_bp.route('/routes', methods=['POST'])
-@jwt_required() # Assuming only admins can create routes
+@jwt_required() 
 def create_route():
     data = request.get_json()
     # ... (Validate data) ...
@@ -36,7 +36,7 @@ def create_route():
     return jsonify({'message': 'Route created successfully'}), 201
 
 @routes_bp.route('/routes/<int:route_id>', methods=['PUT'])
-@jwt_required() # Assuming only admins can update routes
+@jwt_required()
 def update_route(route_id):
     route = Routes.query.get(route_id)
     if route:
@@ -51,7 +51,7 @@ def update_route(route_id):
     return jsonify({'message': 'Route not found'}), 404
 
 @routes_bp.route('/routes/<int:route_id>', methods=['DELETE'])
-@jwt_required() # Assuming only admins can delete routes
+@jwt_required() 
 def delete_route(route_id):
     route = Routes.query.get(route_id)
     if route:

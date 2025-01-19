@@ -11,16 +11,16 @@ class Users(db.Model):
 
     userID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     firstName = db.Column(db.String(50), nullable=False)
-    lastName= db.Column(db.String(50), nullable=False)
+    lastName = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    phoneNumber= db.Column(db.String(20))
+    phoneNumber = db.Column(db.String(20))
     address = db.Column(db.Text)
-    dateOfBirth= db.Column(db.Date)
+    dateOfBirth = db.Column(db.Date)
     gender = db.Column(db.Enum('Male', 'Female', 'Other'))
-    profilePicture= db.Column(db.Text) 
+    profilePicture = db.Column(db.Text) 
 
-    bookings = db.relationship('Bookings', backref='user', lazy=True)
+    bookings = db.relationship('Bookings', backref='booking_user', lazy=True)  # Renamed 'user' to 'booking_user'
 
 class Buses(db.Model):
     __tablename__ = 'Buses'
@@ -33,6 +33,17 @@ class Buses(db.Model):
     registrationNumber = db.Column(db.String(20), unique=True)
     amenities = db.Column(db.Text)
 
+    def to_json(self):
+        return {
+            'busID': self.busID,
+            'busName': self.busName,
+            'busType': self.busType,
+            'capacity': self.capacity,
+            'operator': self.operator,
+            'registrationNumber': self.registrationNumber,
+            'amenities': self.amenities
+        }
+
 class Routes(db.Model):
     __tablename__ = 'Routes'
 
@@ -41,7 +52,16 @@ class Routes(db.Model):
     destination= db.Column(db.String(100), nullable=False)
     distance= db.Column(db.Float)
     estimatedDuration= db.Column(db.Integer) # Store duration in minutes
-
+    
+    def to_json(self):
+        return {
+            "routeID": self.routeID,
+            "origin": self.origin,
+            "destination": self.destination,
+            "distance": self.distance,
+            "estimatedDuration": self.estimatedDuration
+        }
+    
 class Schedules(db.Model):
     __tablename__ = 'Schedules'
 
@@ -55,26 +75,38 @@ class Schedules(db.Model):
 
     bus = db.relationship('Buses', backref=db.backref('schedules', lazy=True))
     route = db.relationship('Routes', backref=db.backref('schedules', lazy=True))
+    
+    def to_json(self):
+        return {
+            "scheduleID": self.scheduleID,
+            "busID": self.busID,
+            "routeID": self.routeID,
+            "departureTime": self.departureTime,
+            "arrivalTime": self.arrivalTime,
+            "fare": self.fare,
+            "daysOfOperation": self.daysOfOperation,
+        }
 
 class Bookings(db.Model):
     __tablename__ = 'Bookings'
 
     bookingID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userID = db.Column(db.Integer, db.ForeignKey('Users.userID'), nullable=False)
+    routeID = db.Column(db.Integer, db.ForeignKey('Routes.routeID'), nullable=False)
     scheduleID = db.Column(db.Integer, db.ForeignKey('Schedules.scheduleID'), nullable=False)
-    seatNumbers= db.Column(db.Text) 
-    bookingDate= db.Column(db.DateTime)
+    busID = db.Column(db.Integer, db.ForeignKey('Buses.busID'), nullable=False)
+    seatNumbers = db.Column(db.Text)
+    bookingDate = db.Column(db.DateTime, default=datetime.utcnow)
     totalPrice = db.Column(db.Float, nullable=False)
-    status= db.Column(db.Enum('Confirmed', 'Cancelled', 'Pending', 'Completed'), default='Pending')
-    paymentStatus= db.Column(db.Enum('Paid', 'Unpaid'), default='Unpaid')
-    paymentGateway= db.Column(db.String(50))
-    transactionID= db.Column(db.String(100))
-
-    user = db.relationship('Users', backref=db.backref('bookings', lazy=True))
+    status = db.Column(db.Enum('Confirmed', 'Cancelled', 'Pending', 'Completed'), default='Pending')
+    paymentStatus = db.Column(db.Enum('Paid', 'Unpaid'), default='Unpaid')
+    paymentGateway = db.Column(db.String(50))
+    transactionID = db.Column(db.String(100), unique=True)
+# Renamed backref from 'bookings' to 'user_bookings' to avoid conflict
+    user = db.relationship('Users', backref=db.backref('user_bookings', lazy=True))  
     schedule = db.relationship('Schedules', backref=db.backref('bookings', lazy=True))
-    bus = db.relationship('Buses', backref='bookings', lazy=True)
-    route = db.relationship('Routes', backref='bookings', lazy=True)
-
+    bus = db.relationship('Buses', backref=db.backref('bookings', lazy=True))
+    route = db.relationship('Routes', backref=db.backref('bookings', lazy=True))
 class SeatLayout(db.Model):
     __tablename__ = 'SeatLayout'
 

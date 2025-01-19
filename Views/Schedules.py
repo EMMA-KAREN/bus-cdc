@@ -1,13 +1,13 @@
 from flask import jsonify, request, Blueprint
 from model import db, Schedules
-from werkzeug.security import generate_password_hash
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from flask_jwt_extended import get_jwt
 
+from flask_jwt_extended import jwt_required
+
+from datetime import datetime
 
 schedules_bp = Blueprint("schedules_bp", __name__)
 # --- Schedules ---
-
+# GET /schedules means get all schedules
 @schedules_bp.route('/schedules', methods=['GET'])
 def get_all_schedules():
     schedules = Schedules.query.all()
@@ -20,25 +20,35 @@ def get_schedule(schedule_id):
         return jsonify(schedule.to_json())
     return jsonify({'message': 'Schedule not found'}), 404
 
+# --- creating new Schedules ---
 @schedules_bp.route('/schedules', methods=['POST'])
-@jwt_required() # Assuming only admins can create schedules
+@jwt_required() 
 def create_schedule():
     data = request.get_json()
-    # ... (Validate data) ...
+    
+    # Validate and parse datetime fields
+    try:
+        departure_time = datetime.strptime(data['departureTime'], '%I:%M %p')  # Example format: '09:00 AM'
+        arrival_time = datetime.strptime(data['arrivalTime'], '%I:%M %p')      # Example format: '11:00 AM'
+    except ValueError as e:
+        return jsonify({'message': 'Invalid time format. Use HH:MM AM/PM'}), 400
+
+    # Create a new schedule
     new_schedule = Schedules(
         busID=data['busID'],
         routeID=data['routeID'],
-        departureTime=data['departureTime'],
-        arrivalTime=data['arrivalTime'],
+        departureTime=departure_time,
+        arrivalTime=arrival_time,
         fare=data['fare'],
         daysOfOperation=data['daysOfOperation']
     )
     db.session.add(new_schedule)
     db.session.commit()
+  
     return jsonify({'message': 'Schedule created successfully'}), 201
-
+# put means update 
 @schedules_bp.route('/schedules/<int:schedule_id>', methods=['PUT'])
-@jwt_required() # Assuming only admins can update schedules
+@jwt_required() 
 def update_schedule(schedule_id):
     schedule = Schedules.query.get(schedule_id)
     if schedule:
@@ -55,7 +65,7 @@ def update_schedule(schedule_id):
     return jsonify({'message': 'Schedule not found'}), 404
 
 @schedules_bp.route('/schedules/<int:schedule_id>', methods=['DELETE'])
-@jwt_required() # Assuming only admins can delete schedules
+@jwt_required() 
 def delete_schedule(schedule_id):
     schedule = Schedules.query.get(schedule_id)
     if schedule:

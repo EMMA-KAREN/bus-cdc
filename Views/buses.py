@@ -28,11 +28,11 @@ def get_all_buses():
 def get_bus(bus_id):
     bus = Buses.query.get(bus_id)
     if bus:
-        return jsonify(bus.to_json())
+        return jsonify(bus.to_json()),200
     return jsonify({'message': 'Bus not found'}), 404
 
 @Buses_bp.route('/buses', methods=['POST'])
-@jwt_required() # Assuming only admins can create buses
+@jwt_required()
 def create_bus():
     data = request.get_json()
     # ... (Validate data) ...
@@ -50,7 +50,7 @@ def create_bus():
 
 # ... UPDATE ...
 @Buses_bp.route('/buses/<int:bus_id>', methods=['PUT'])
-@jwt_required() # Assuming only admins can update buses
+@jwt_required()
 def update_bus(bus_id):
     bus = Buses.query.get(bus_id)
     if bus:
