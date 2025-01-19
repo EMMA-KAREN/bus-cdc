@@ -1,18 +1,26 @@
 
-from flask_jwt_extended import jwt_required
+# ---all routes,
+#  retrieving a specific route,
+#  creating new routes, 
+# updating existing routes,
+#  and deleting routes,
+#  JWT-based authentication
 
+from flask_jwt_extended import jwt_required
 from flask import jsonify, request, Blueprint
 from model import db, Routes
-from werkzeug.security import generate_password_hash
+
 
 routes_bp = Blueprint("routes_bp", __name__)
 # --- Routes ---
+# ------ all routes from the database.
 
 @routes_bp.route('/routes', methods=['GET'])
 def get_all_routes():
     routes = Routes.query.all()
     return jsonify([route.to_json() for route in routes])
 
+# ------ get a route by id.
 @routes_bp.route('/routes/<int:route_id>', methods=['GET'])
 def get_route(route_id):
     route = Routes.query.get(route_id)
@@ -20,6 +28,7 @@ def get_route(route_id):
         return jsonify(route.to_json())
     return jsonify({'message': 'Route not found'}), 404
 
+# ------ create a new route. only Allows authenticated users
 @routes_bp.route('/routes', methods=['POST'])
 @jwt_required() 
 def create_route():
@@ -35,6 +44,7 @@ def create_route():
     db.session.commit()
     return jsonify({'message': 'Route created successfully'}), 201
 
+# ------ update a route by id. only Allows authenticated users 
 @routes_bp.route('/routes/<int:route_id>', methods=['PUT'])
 @jwt_required()
 def update_route(route_id):
@@ -50,6 +60,7 @@ def update_route(route_id):
         return jsonify({'message': 'Route updated successfully'})
     return jsonify({'message': 'Route not found'}), 404
 
+# ------ delete a route by id. only Allows authenticated users
 @routes_bp.route('/routes/<int:route_id>', methods=['DELETE'])
 @jwt_required() 
 def delete_route(route_id):

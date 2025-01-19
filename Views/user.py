@@ -1,9 +1,16 @@
 
+# user-related actions such as registering,
+#  logging in, 
+# updating profile information, 
+# changing passwords, 
+# deleting accounts,
+# logging out using JWT-based authentication for secure access to protected routes.
+
 
 from flask import jsonify, request, Blueprint
 from model import db, Users, TokenBlocklist
 from werkzeug.security import generate_password_hash,  check_password_hash
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from datetime import timezone
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_jwt
@@ -19,27 +26,27 @@ def get_users():
 
 
 
-# User Registration
+# User Registration -----registers a user if email is unique ,validates D.O.B string to object-----
 @user_bp.route('/register', methods=['POST'])
 def register_user():
     data = request.json
 
-    # Check if email already exists
+    # Check if email already exists before registering a user 
     if Users.query.filter_by(email=data['email']).first():
         return jsonify({'error': 'Email already exists'}), 400
 
     # Convert the dateOfBirth string to a date object
     date_of_birth = datetime.strptime(data['dateOfBirth'], '%Y-%m-%d').date() if data.get('dateOfBirth') else None
 
-    # Normalize gender input
-    gender = data.get('gender', '').capitalize()  # Capitalize 'female' to 'Female'
+    # Normalize gender input :Capitalize 'female' to 'Female'
+    gender = data.get('gender', '').capitalize()  
 
     # Validate that the gender is among allowed values
     allowed_genders = ['Male', 'Female', 'Other']
     if gender not in allowed_genders:
         return jsonify({'error': f"Invalid gender. Allowed values: {', '.join(allowed_genders)}"}), 400
 
-    # Hash the password
+    # Hash the password to store securely before going to the database
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
 
     # Create a new user instance
@@ -51,7 +58,7 @@ def register_user():
         phoneNumber=data.get('phoneNumber'),
         address=data.get('address'),
         dateOfBirth=date_of_birth,
-        gender=gender  # Use normalized gender
+        gender=gender 
     )
 
     # Add and commit the new user
@@ -60,7 +67,7 @@ def register_user():
 
     return jsonify({'message': 'User registered successfully'}), 201
 
-# User Login
+# User Login -----checks if email and password are valid, returns a JWT token if they are-----
 @user_bp.route('/login', methods=['POST'])
 def login_user():
     data = request.json
@@ -79,7 +86,7 @@ def login_user():
 
 
 
-# Get Current User 
+# Get Current User ---retrive data of currently log in user  using  jwt to authenicate
 @user_bp.route('/current_user', methods=['GET'])
 @jwt_required()
 def get_current_user():
@@ -100,7 +107,7 @@ def get_current_user():
         'gender': user.gender
     }), 200
 
-# Update User Profile (protected)
+# Update User Profile  for those log in user  
 @user_bp.route('/user/update', methods=['PUT'])
 @jwt_required()
 def update_user_profile():
@@ -118,18 +125,20 @@ def update_user_profile():
     db.session.commit()
     return jsonify({'message': 'Profile updated successfully'}), 200
 
-# Update User Password (protected)
+# Update User Password for only users who have log in 
 @user_bp.route('/user/updatepassword', methods=['PUT'])
 @jwt_required()
 def update_user_password():
-    user_id = get_jwt_identity()  # Get the ID of the logged-in user
-    user = Users.query.get(user_id)  # Retrieve the user from the database
+     # Get the ID of the logged-in user
+    user_id = get_jwt_identity() 
+    # Retrieve the user from the database
+    user = Users.query.get(user_id)  
 
-    # If the user is not found, return an error
+    # If the user is not found, return an error ---- Parse the incoming JSON request
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
-    data = request.json  # Parse the incoming JSON request
+    data = request.json  
 
     # Validate that both old_password and new_password are present
     if not data.get('old_password') or not data.get('new_password'):

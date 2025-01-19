@@ -102,11 +102,12 @@ class Bookings(db.Model):
     paymentStatus = db.Column(db.Enum('Paid', 'Unpaid'), default='Unpaid')
     paymentGateway = db.Column(db.String(50))
     transactionID = db.Column(db.String(100), unique=True)
-# Renamed backref from 'bookings' to 'user_bookings' to avoid conflict
+
     user = db.relationship('Users', backref=db.backref('user_bookings', lazy=True))  
     schedule = db.relationship('Schedules', backref=db.backref('bookings', lazy=True))
     bus = db.relationship('Buses', backref=db.backref('bookings', lazy=True))
     route = db.relationship('Routes', backref=db.backref('bookings', lazy=True))
+
 class SeatLayout(db.Model):
     __tablename__ = 'SeatLayout'
 

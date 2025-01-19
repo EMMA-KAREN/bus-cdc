@@ -1,15 +1,16 @@
 
+# CRUD operations (Create, Read, Update, Delete)
+# JWT-based authentication is used for secure access, allowing only authorized users to create, update, or delete buses.
 
 from flask import jsonify, request, Blueprint
 from model import db, Buses
-from werkzeug.security import generate_password_hash
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from flask_jwt_extended import get_jwt
+from flask_jwt_extended import jwt_required
 
 
 Buses_bp = Blueprint("Buses_bp", __name__)
 
 # --- Buses ---
+# GET /buses (all buses)
 
 @Buses_bp.route('/buses', methods=['GET'])
 def get_all_buses():
@@ -24,6 +25,7 @@ def get_all_buses():
         'amenities': bus.amenities
     } for bus in buses]), 200
 
+# get bus by id
 @Buses_bp.route('/buses/<int:bus_id>', methods=['GET'])
 def get_bus(bus_id):
     bus = Buses.query.get(bus_id)
@@ -31,6 +33,7 @@ def get_bus(bus_id):
         return jsonify(bus.to_json()),200
     return jsonify({'message': 'Bus not found'}), 404
 
+# POST /buses (create a new bus)---- Allows authenticated users
 @Buses_bp.route('/buses', methods=['POST'])
 @jwt_required()
 def create_bus():
@@ -48,7 +51,7 @@ def create_bus():
     db.session.commit()
     return jsonify({'message': 'Bus created successfully'}), 201
 
-# ... UPDATE ...
+# ... UPDATE  buses based on id ...Allows authenticated users
 @Buses_bp.route('/buses/<int:bus_id>', methods=['PUT'])
 @jwt_required()
 def update_bus(bus_id):
@@ -66,6 +69,7 @@ def update_bus(bus_id):
         return jsonify({'message': 'Bus updated successfully'})
     return jsonify({'message': 'Bus not found'}), 404
 
+# ... DELETE buses based on id ...Allows authenticated users
 @Buses_bp.route('/buses/<int:bus_id>', methods=['DELETE'])
 @jwt_required() # Assuming only admins can delete buses
 def delete_bus(bus_id):

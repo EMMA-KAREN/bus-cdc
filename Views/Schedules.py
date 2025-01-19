@@ -1,3 +1,10 @@
+
+#  schedules with CRUD operations (Create, Read, Update, Delete). 
+# It allows users to view all schedules, retrieve specific schedules by ID,
+#  create new schedules, update existing schedules, and delete schedules,
+#   JWT-based authentication for secure access.
+
+
 from flask import jsonify, request, Blueprint
 from model import db, Schedules
 
@@ -7,12 +14,13 @@ from datetime import datetime
 
 schedules_bp = Blueprint("schedules_bp", __name__)
 # --- Schedules ---
-# GET /schedules means get all schedules
+# GET /schedules means get all schedules then eturns the schedule data in JSON format.
 @schedules_bp.route('/schedules', methods=['GET'])
 def get_all_schedules():
     schedules = Schedules.query.all()
     return jsonify([schedule.to_json() for schedule in schedules])
 
+#  ----Retrieves a specific schedule based on its schedule_id.
 @schedules_bp.route('/schedules/<int:schedule_id>', methods=['GET'])
 def get_schedule(schedule_id):
     schedule = Schedules.query.get(schedule_id)
@@ -20,7 +28,7 @@ def get_schedule(schedule_id):
         return jsonify(schedule.to_json())
     return jsonify({'message': 'Schedule not found'}), 404
 
-# --- creating new Schedules ---
+# ---Allows authenticated users (using JWT) to create a new schedule by providing necessary details ---
 @schedules_bp.route('/schedules', methods=['POST'])
 @jwt_required() 
 def create_schedule():
@@ -47,6 +55,7 @@ def create_schedule():
   
     return jsonify({'message': 'Schedule created successfully'}), 201
 # put means update 
+# ---Allows authenticated users (using JWT) to update a specific schedule by providing its schedule_id and
 @schedules_bp.route('/schedules/<int:schedule_id>', methods=['PUT'])
 @jwt_required() 
 def update_schedule(schedule_id):
@@ -64,6 +73,8 @@ def update_schedule(schedule_id):
         return jsonify({'message': 'Schedule updated successfully'})
     return jsonify({'message': 'Schedule not found'}), 404
 
+# delete means delete
+# ---Allows authenticated users (using JWT) to delete a specific schedule by providing its schedule_id ---
 @schedules_bp.route('/schedules/<int:schedule_id>', methods=['DELETE'])
 @jwt_required() 
 def delete_schedule(schedule_id):
