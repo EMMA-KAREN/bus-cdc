@@ -51,7 +51,7 @@ def create_bus():
     db.session.commit()
     return jsonify({'message': 'Bus created successfully'}), 201
 
-# ... UPDATE  buses based on id ...Allows authenticated users
+# ... UPDATE  buses based on id ...Allows authenticated users 
 @Buses_bp.route('/buses/<int:bus_id>', methods=['PUT'])
 @jwt_required()
 def update_bus(bus_id):

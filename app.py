@@ -11,9 +11,23 @@ from Views.buses import Buses_bp
 from Views.routes import routes_bp
 from Views.bookings import bookings_bp
 from Views.Schedules import schedules_bp
+from flask_mail import Mail
 
 # Create Flask application
 app = Flask(__name__)
+
+# Configurations for Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'emmaculate.mwikali@student.moringaschool.com'  # Replace with your email
+app.config['MAIL_PASSWORD'] = 'wsfy gvyl dmtu jrae'        # Replace with your email password or app-specific password
+app.config['MAIL_DEFAULT_SENDER'] =app.config ['MAIL_USERNAME']
+
+# Initialize Mail
+mail = Mail(app)
+
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bus.db'

@@ -20,7 +20,7 @@ class Users(db.Model):
     gender = db.Column(db.Enum('Male', 'Female', 'Other'))
     profilePicture = db.Column(db.Text) 
 
-    bookings = db.relationship('Bookings', backref='booking_user', lazy=True)  # Renamed 'user' to 'booking_user'
+    bookings = db.relationship('Bookings', backref='booking_user', lazy=True) 
 
 class Buses(db.Model):
     __tablename__ = 'Buses'

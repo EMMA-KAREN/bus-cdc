@@ -13,7 +13,7 @@ def get_users_bookings():
     users_with_bookings = db.session.query(Users, Bookings, Buses, Routes).join(Bookings).join(Buses).join(Routes).all()
     
     result = []
-    for user, booking, bus, route in users_with_bookings:
+    for user,  bus, route in users_with_bookings:
         result.append({
             'user_id': user.id,
             'username': user.username,

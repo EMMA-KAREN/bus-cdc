@@ -15,7 +15,7 @@ from datetime import datetime
 from datetime import timezone
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_jwt
 
-
+from flask_mail import Mail, Message
 
 user_bp = Blueprint("user_bp", __name__)
 
@@ -27,26 +27,27 @@ def get_users():
 
 
 # User Registration -----registers a user if email is unique ,validates D.O.B string to object-----
+# Initialize Flask-Mail
+mail = Mail()
+
 @user_bp.route('/register', methods=['POST'])
 def register_user():
     data = request.json
 
-    # Check if email already exists before registering a user 
+    # Check if email already exists before registering a user
     if Users.query.filter_by(email=data['email']).first():
         return jsonify({'error': 'Email already exists'}), 400
 
     # Convert the dateOfBirth string to a date object
     date_of_birth = datetime.strptime(data['dateOfBirth'], '%Y-%m-%d').date() if data.get('dateOfBirth') else None
 
-    # Normalize gender input :Capitalize 'female' to 'Female'
-    gender = data.get('gender', '').capitalize()  
-
-    # Validate that the gender is among allowed values
+    # Normalize gender input
+    gender = data.get('gender', '').capitalize()
     allowed_genders = ['Male', 'Female', 'Other']
     if gender not in allowed_genders:
         return jsonify({'error': f"Invalid gender. Allowed values: {', '.join(allowed_genders)}"}), 400
 
-    # Hash the password to store securely before going to the database
+    # Hash the password
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
 
     # Create a new user instance
@@ -58,12 +59,24 @@ def register_user():
         phoneNumber=data.get('phoneNumber'),
         address=data.get('address'),
         dateOfBirth=date_of_birth,
-        gender=gender 
+        gender=gender
     )
 
     # Add and commit the new user
     db.session.add(new_user)
     db.session.commit()
+
+    # Send a confirmation email
+    try:
+        send_email(
+            recipient=data['email'],
+            subject='Welcome to the Bus Booking System',
+            body=f"Hi {new_user.firstName},\n\n"
+                 f"Thank you for registering! You can now book buses and routes using our platform.\n\n"
+                 f"Best regards,\nThe Team"
+        )
+    except Exception as e:
+        return jsonify({'error': f"User registered, but email sending failed: {str(e)}"}), 500
 
     return jsonify({'message': 'User registered successfully'}), 201
 
@@ -84,6 +97,14 @@ def login_user():
         'access_token': access_token
     }), 200
 
+def send_email(recipient, subject, body):
+    msg = Message(
+        subject=subject,
+        sender='emmaculate.mwikali@student.moringaschool.com',  # Replace with your sender email
+        recipients=[recipient],
+        body=body
+    )
+    mail.send(msg)
 
 
 # Get Current User ---retrive data of currently log in user  using  jwt to authenicate
