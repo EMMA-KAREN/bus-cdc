@@ -7,16 +7,16 @@ const ProfilePage = () => {
   const { current_user, logout, setCurrentUser } = useContext(UserContext);
   const [user, setUser] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);  // Added loading state
-  const [errorMessage, setErrorMessage] = useState("");  // Added error state
+  const [loading, setLoading] = useState(false);  
+  const [errorMessage, setErrorMessage] = useState("");  
   const navigate = useNavigate();
 
   useEffect(() => {
     if (current_user) {
-      const formattedDate = new Date(current_user.dateOfBirth).toISOString().split('T')[0];  // Format the date correctly
+      const formattedDate = new Date(current_user.dateOfBirth).toISOString().split('T')[0];  
       setUser({
         ...current_user,
-        dateOfBirth: formattedDate,  // Update dateOfBirth with the correctly formatted date
+        dateOfBirth: formattedDate, 
       });
     }
   }, [current_user]);
@@ -46,7 +46,7 @@ const ProfilePage = () => {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/user/update", {
+      const response = await fetch("https://bus-cdc-1.onrender.com/user/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const ProfilePage = () => {
     if (window.confirm("Are you sure you want to delete your account?")) {
       setLoading(true);  // Set loading state
       try {
-        const response = await fetch("http://127.0.0.1:5000/user/delete_account", {
+        const response = await fetch("https://bus-cdc-1.onrender.com/user/delete_account", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -98,16 +98,16 @@ const ProfilePage = () => {
         navigate("/login");
       } catch (error) {
         console.error("Error deleting account:", error.message);
-        setErrorMessage(error.message);  // Show error to user
+        setErrorMessage(error.message);  
       } finally {
-        setLoading(false);  // Reset loading state
+        setLoading(false);  
       }
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    logout();  // Assuming this clears the context
+    logout(); 
     navigate("/login");
   };
 
@@ -122,7 +122,7 @@ const ProfilePage = () => {
               className="w-32 h-32 rounded-full mb-4"
             />
             <h2 className="text-2xl font-bold">{`${user.firstName} ${user.lastName}`}</h2>
-            <p className="text-gray-600">{user.email}</p> {/* Email section */}
+            <p className="text-gray-600">{user.email}</p>
             <p className="text-gray-600">{user.phoneNumber}</p>
             <p className="text-gray-600">{user.address}</p>
             <p className="text-gray-600">{user.gender}</p>

@@ -21,10 +21,10 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Call the login function from context
+     
       await login(email, password);
 
-      // Successful login, redirecting to dashboard based on role
+     
       const userRole = role === 'admin' ? 'adminDashboard' : 'user/dashboard';
       navigate(`/${userRole}`);
     } catch (error) {

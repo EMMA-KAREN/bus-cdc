@@ -3,21 +3,21 @@ import { UserContext } from '../context/UserContext';
 import { BookingContext } from "../context/BookingContext";
 import { toast } from "react-toastify";
 import Booking from '../pages/Booking';
-import ProfilePage from '../pages/ProfilePage'; // Import ProfilePage component
+import ProfilePage from '../pages/ProfilePage'; 
 
 const UserDashboard = () => {
   const { bookings, fetchBookings, updateBooking, cancelBooking } = useContext(BookingContext);
   const { current_user } = useContext(UserContext);
   const [editingBooking, setEditingBooking] = useState(null);
   const [newSeatNumbers, setNewSeatNumbers] = useState([]);
-
+// Fetch all bookings when the user is logged in
   useEffect(() => {
     if (current_user) {
-      fetchBookings();  // Fetch all bookings when the user is logged in
+      fetchBookings();  
     }
   }, [current_user, fetchBookings]);
 
-  console.log(bookings);  // Check the structure of the bookings
+  console.log(bookings);  
 
   if (!current_user) {
     return <div>Loading user...</div>;
@@ -105,7 +105,7 @@ const UserDashboard = () => {
                       </button>
                     </>
                   ) : (
-                    // Regular user can only update or cancel their own bookings
+                    // update or cancel their own bookings
                     <>
                       <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => handleUpdateClick(booking)}>Update</button>
                       <button

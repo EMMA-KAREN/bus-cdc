@@ -13,11 +13,11 @@ export const UserProvider = ({ children }) => {
   console.log("Current user:", current_user);
 
   // LOGIN
-  // Modify login function to properly handle admin redirect
+
 
   const login = (email, password) => {
     toast.loading("Logging you in...");
-    fetch("http://127.0.0.1:5000/login", {
+    fetch("https://bus-cdc-1.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
           setAuthToken(response.access_token);
   
           // Fetch the current user data
-          fetch("http://127.0.0.1:5000/current_user", {
+          fetch("https://bus-cdc-1.onrender.com/current_user", {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -62,15 +62,10 @@ export const UserProvider = ({ children }) => {
   };
   
   // LOGOUT
-  // UserContext.jsx
-const logout = () => {
-  // Remove the JWT token from localStorage
+  
+ const logout = () => {
   localStorage.removeItem("access_token");
-
-  // Clear any user-related context or state
-  setCurrentUser(null);  // Assuming you have setCurrentUser to update the user context state
-
-  // Optionally, you can redirect the user to the login page or handle it elsewhere
+  setCurrentUser(null); 
   navigate("/login");
 };
 
@@ -83,7 +78,7 @@ const logout = () => {
   }, [authToken]);
 
   const fetchCurrentUser = () => {
-    fetch("http://127.0.0.1:5000/current_user", {
+    fetch("https://bus-cdc-1.onrender.com/current_user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +100,7 @@ const logout = () => {
   // REGISTER USER
   const addUser = (user) => {
     toast.loading("Registering...");
-    fetch("http://127.0.0.1:5000/register", {
+    fetch("https://bus-cdc-1.onrender.com/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +115,7 @@ const logout = () => {
         gender: user.gender,
         dateOfBirth: user.dateOfBirth,
         role: user.role,
-        profilePicture: user.profilePicture || "", // Optional
+        profilePicture: user.profilePicture || "", 
       }),
     })
       .then((resp) => resp.json())
@@ -128,7 +123,7 @@ const logout = () => {
         toast.dismiss();
         if (response.message) {
           toast.success(response.message);
-          setCurrentUser(response.user);  // Set the current user after successful registration
+          setCurrentUser(response.user); 
           navigate("/login");
         } else {
           toast.error(response.error || "Failed to register");
@@ -155,7 +150,7 @@ const logout = () => {
     authToken,
     login,
     current_user,
-    setCurrentUser, // Make sure this is passed to context
+    setCurrentUser, 
     logout,
     addUser,
   

@@ -6,7 +6,7 @@ export const ScheduleContext = createContext();
 
 export const ScheduleProvider = ({ children }) => {
   const [schedules, setSchedules] = useState([]);
-  const authToken = sessionStorage.getItem("token"); // Retrieve JWT token
+  const authToken = sessionStorage.getItem("token");
 
   useEffect(() => {
     fetchSchedules();
@@ -15,13 +15,13 @@ export const ScheduleProvider = ({ children }) => {
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`, // Attach JWT token
+      Authorization: `Bearer ${authToken}`,
     },
   };
 
   const fetchSchedules = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/schedules", axiosConfig);
+      const response = await axios.get("https://bus-cdc-1.onrender.com/schedules", axiosConfig);
       setSchedules(response.data);
     } catch (error) {
       toast.error("Error fetching schedules");
@@ -31,7 +31,7 @@ export const ScheduleProvider = ({ children }) => {
 
   const addSchedule = async (scheduleData) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/schedules", scheduleData, axiosConfig);
+      const response = await axios.post("https://bus-cdc-1.onrender.com/schedules", scheduleData, axiosConfig);
       setSchedules([...schedules, response.data]);
       toast.success("Schedule added successfully");
     } catch (error) {
@@ -42,8 +42,8 @@ export const ScheduleProvider = ({ children }) => {
 
   const updateSchedule = async (scheduleID, updatedData) => {
     try {
-      console.log("Updating schedule with ID:", scheduleID); // Debugging line
-      const response = await axios.put(`http://127.0.0.1:5000/schedules/${scheduleID}`, updatedData, axiosConfig);
+      console.log("Updating schedule with ID:", scheduleID);
+      const response = await axios.put(`https://bus-cdc-1.onrender.com/schedules/${scheduleID}`, updatedData, axiosConfig);
       const updatedSchedule = response.data.schedule;
       setSchedules(schedules.map((s) => (s.scheduleID === scheduleID ? updatedSchedule : s)));
       toast.success("Schedule updated successfully");
@@ -58,7 +58,7 @@ export const ScheduleProvider = ({ children }) => {
 
   const deleteSchedule = async (scheduleID) => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/schedules/${scheduleID}`, axiosConfig);
+      await axios.delete(`https://bus-cdc-1.onrender.com/schedules/${scheduleID}`, axiosConfig);
       setSchedules(schedules.filter((s) => s.scheduleID !== scheduleID));
       toast.success("Schedule deleted successfully");
     } catch (error) {

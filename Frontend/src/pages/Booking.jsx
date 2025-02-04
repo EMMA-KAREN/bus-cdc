@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react'; // Correct import
-import { BusContext } from '../context/BusContext'; // Import the BusContext
+import React, { useState, useContext, useEffect } from 'react';
+import { BusContext } from '../context/BusContext'; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BookingContext } from '../context/BookingContext'; // Adjust the path if needed
+import { BookingContext } from '../context/BookingContext'; 
 import { UserContext } from '../context/UserContext';
 
 const Booking = ({ scheduleID }) => {
@@ -16,8 +16,9 @@ const Booking = ({ scheduleID }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const { current_user } = useContext(UserContext);
 
+  // Set selected route
   const handleRouteSelection = (route) => {
-    setSelectedRoute(route); // Set selected route
+    setSelectedRoute(route); 
   };
 
   useEffect(() => {
@@ -26,16 +27,18 @@ const Booking = ({ scheduleID }) => {
     }
   }, [buses]);
 
+  // Reset selected seats when bus is changed
   const handleBusSelection = (bus) => {
     setSelectedBus(bus);
-    setSelectedSeats([]); // Reset selected seats when bus is changed
+    setSelectedSeats([]); 
   };
+
 
   const handleSeatSelection = (seat) => {
     setSelectedSeats((prevSeats) =>
       prevSeats.includes(seat)
         ? prevSeats.filter((s) => s !== seat)
-        : [...prevSeats, seat] // Add or remove seat from selected seats
+        : [...prevSeats, seat] 
     );
   };
 
@@ -55,7 +58,7 @@ const Booking = ({ scheduleID }) => {
       totalPrice: selectedSeats.length * 100,
       paymentGateway: "Stripe",
       transactionID: `txn_${Date.now()}`,
-      routeID: selectedRoute.routeID // Send the selected routeID
+      routeID: selectedRoute.routeID 
     };
 
     try {
@@ -67,7 +70,7 @@ const Booking = ({ scheduleID }) => {
         setPhone('');
         setSelectedRoute(null);
         setSelectedBus(null);
-        setSelectedSeats([]); // Reset the form
+        setSelectedSeats([]); 
       } else {
         toast.error('Error during booking. Please try again.');
       }

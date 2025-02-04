@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { RouteContext } from "../context/RouteContext";
 import { Modal, Button, Form, Table } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
+import { useNavigate } from "react-router-dom";  
 
 const AllRoutes = () => {
   const { routes, addRoute, updateRoute, deleteRoute } = useContext(RouteContext);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); 
 
   const [showModal, setShowModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);

@@ -54,13 +54,13 @@ const AdminDashboard = () => {
       paymentStatus: selectedPaymentStatus,
     };
   
-    console.log("Sending payload:", JSON.stringify(payload)); // Log request data
+    console.log("Sending payload:", JSON.stringify(payload)); 
   
     const token = localStorage.getItem("token");
   
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/bookings/${selectedBooking.bookingID}/admin/status`,
+        `https://bus-cdc-1.onrender.com/bookings/${selectedBooking.bookingID}/admin/status`,
         {
           method: "PUT",
           headers: {

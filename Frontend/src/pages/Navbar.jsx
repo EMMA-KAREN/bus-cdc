@@ -6,8 +6,7 @@ const Navbar = () => {
 
   const handleNavigation = (type, action) => {
     if (action === 'login') {
-      navigate(`/login?role=${type}`); // Navigate to the login page
-    } else {
+      navigate(`/login?role=${type}`);
       navigate(`/${action}?role=${type}`);
     }
   };

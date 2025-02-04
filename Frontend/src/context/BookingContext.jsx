@@ -18,7 +18,7 @@ export const BookingProvider = ({ children }) => {
   if (!authToken) return;
 
   try {
-      const response = await fetch(`http://127.0.0.1:5000/bookings?userID=${userID}`, {
+      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings?userID=${userID}`, {
           method: "GET",
           headers: {
               "Authorization": `Bearer ${authToken}`,
@@ -32,11 +32,11 @@ export const BookingProvider = ({ children }) => {
       const data = await response.json();
       console.log("Bookings:", data);
 
-      // Ensure we only set the bookings relevant to the user
+      // set the bookings relevant to the user
       if (current_user?.role !== "admin") {
           setBookings(data.filter(booking => booking.userID === current_user.userID));
       } else {
-          setBookings(data); // Admin sees all bookings
+          setBookings(data); 
       }
   } catch (error) {
       console.error("Fetch error:", error);
@@ -50,7 +50,7 @@ export const BookingProvider = ({ children }) => {
     if (!authToken) return;
   
     try {
-      const response = await fetch("http://127.0.0.1:5000/users", {
+      const response = await fetch("https://bus-cdc-1.onrender.com/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export const BookingProvider = ({ children }) => {
   
       const data = await response.json();
       if (response.ok) {
-        setUsers(data); // No longer appending to current user
+        setUsers(data); 
       } else {
         toast.error("Failed to fetch users.");
       }
@@ -78,7 +78,7 @@ export const BookingProvider = ({ children }) => {
 
   const bookBus = async (bookingData) => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/bookings", {
+      const response = await fetch("https://bus-cdc-1.onrender.com/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const BookingProvider = ({ children }) => {
     if (!authToken) return toast.error("Authentication required.");
     
     try {
-      const response = await fetch(`http://127.0.0.1:5000/bookings/${bookingId}/admin/status`, {
+      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings/${bookingId}/admin/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export const BookingProvider = ({ children }) => {
         },
         body: JSON.stringify({ 
           status: newStatus,
-          paymentStatus: newPaymentStatus || "pending" // Provide a default if necessary
+          paymentStatus: newPaymentStatus || "pending"
         }),
       });
   
@@ -133,7 +133,7 @@ export const BookingProvider = ({ children }) => {
   const updateBooking = async (bookingId, updatedData) => {
     if (!authToken) return toast.error("Authentication required.");
     try {
-      const response = await fetch(`http://127.0.0.1:5000/bookings/${bookingId}`, {
+      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings/${bookingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -160,7 +160,7 @@ export const BookingProvider = ({ children }) => {
     if (!authToken) return toast.error("Authentication required.");
     
     try {
-      const response = await fetch(`http://127.0.0.1:5000/bookings/${bookingID}`, {
+      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings/${bookingID}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${authToken}`,
@@ -174,7 +174,7 @@ export const BookingProvider = ({ children }) => {
       }
   
       toast.success("Booking deleted successfully!");
-      setBookings(bookings.filter((booking) => booking.bookingID !== bookingID)); // Remove from state
+      setBookings(bookings.filter((booking) => booking.bookingID !== bookingID)); 
     } catch (error) {
       toast.error("Error deleting booking: " + error.message);
     }
@@ -186,7 +186,7 @@ export const BookingProvider = ({ children }) => {
   const fetchRoutes = async () => {
     if (!authToken) return toast.error("Authentication token missing.");
     try {
-      const response = await fetch("http://127.0.0.1:5000/routes", {
+      const response = await fetch("https://bus-cdc-1.onrender.com/routes", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
 
