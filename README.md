@@ -21,7 +21,7 @@ The backend exposes the following RESTful endpoints for interaction:
 
 ### User Management
 - **Add a New User:** Input personal details (name, email, phone number) and create a user account.
-- **View Users:** List all users along with their associated bookings.
+- **View Users BOOKINGS :** List  OF all BOOKING users .
 - **Update User Details:** Modify details like email or address.
 - **Delete a User:** Remove a user by their ID.
 
@@ -164,7 +164,13 @@ API documentation is auto-generated using FastAPI and can be accessed at [](http
 ---
 
 ## Links
-video link:  https://www.loom.com/share/7c288a6ec1d744e4b90142f3a8c9e982?sid=0e1bcf6f-f864-42d4-82a1-28497d782ed2
+VIDEO RECORD  https://www.loom.com/share/7c288a6ec1d744e4b90142f3a8c9e982?sid=0e1bcf6f-f864-42d4-82a1-28497d782ed2
+
+GITHUB:https://github.com/EMMA-KAREN/bus-cdc
+
+FRONTEND:https://busbb-git-main-emmas-projects-945fc304.vercel.app/
+
+BACKEND:https://bus-cdc-2.onrender.com
 
 
 ## Chalanges 
