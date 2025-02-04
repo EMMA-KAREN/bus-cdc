@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
 
   const login = (email, password) => {
     toast.loading("Logging you in...");
-    fetch("https://bus-cdc-1.onrender.com/login", {
+    fetch("https://bus-cdc-2.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
           setAuthToken(response.access_token);
   
           // Fetch the current user data
-          fetch("https://bus-cdc-1.onrender.com/current_user", {
+          fetch("https://bus-cdc-2.onrender.com/current_user", {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export const UserProvider = ({ children }) => {
   }, [authToken]);
 
   const fetchCurrentUser = () => {
-    fetch("https://bus-cdc-1.onrender.com/current_user", {
+    fetch("https://bus-cdc-2.onrender.com/current_user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export const UserProvider = ({ children }) => {
   // REGISTER USER
   const addUser = (user) => {
     toast.loading("Registering...");
-    fetch("https://bus-cdc-1.onrender.com/register", {
+    fetch("https://bus-cdc-2.onrender.com/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

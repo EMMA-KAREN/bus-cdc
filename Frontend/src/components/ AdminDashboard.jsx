@@ -60,7 +60,7 @@ const AdminDashboard = () => {
   
     try {
       const response = await fetch(
-        `https://bus-cdc-1.onrender.com/bookings/${selectedBooking.bookingID}/admin/status`,
+        `https://bus-cdc-2.onrender.com/bookings/${selectedBooking.bookingID}/admin/status`,
         {
           method: "PUT",
           headers: {

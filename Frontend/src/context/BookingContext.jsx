@@ -18,7 +18,7 @@ export const BookingProvider = ({ children }) => {
   if (!authToken) return;
 
   try {
-      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings?userID=${userID}`, {
+      const response = await fetch(`https://bus-cdc-2.onrender.com/bookings?userID=${userID}`, {
           method: "GET",
           headers: {
               "Authorization": `Bearer ${authToken}`,
@@ -50,7 +50,7 @@ export const BookingProvider = ({ children }) => {
     if (!authToken) return;
   
     try {
-      const response = await fetch("https://bus-cdc-1.onrender.com/users", {
+      const response = await fetch("https://bus-cdc-2.onrender.com/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export const BookingProvider = ({ children }) => {
 
   const bookBus = async (bookingData) => {
     try {
-      const response = await fetch("https://bus-cdc-1.onrender.com/bookings", {
+      const response = await fetch("https://bus-cdc-2.onrender.com/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const BookingProvider = ({ children }) => {
     if (!authToken) return toast.error("Authentication required.");
     
     try {
-      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings/${bookingId}/admin/status`, {
+      const response = await fetch(`https://bus-cdc-2.onrender.com/bookings/${bookingId}/admin/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export const BookingProvider = ({ children }) => {
   const updateBooking = async (bookingId, updatedData) => {
     if (!authToken) return toast.error("Authentication required.");
     try {
-      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings/${bookingId}`, {
+      const response = await fetch(`https://bus-cdc-2.onrender.com/bookings/${bookingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -160,7 +160,7 @@ export const BookingProvider = ({ children }) => {
     if (!authToken) return toast.error("Authentication required.");
     
     try {
-      const response = await fetch(`https://bus-cdc-1.onrender.com/bookings/${bookingID}`, {
+      const response = await fetch(`https://bus-cdc-2.onrender.com/bookings/${bookingID}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${authToken}`,
@@ -186,7 +186,7 @@ export const BookingProvider = ({ children }) => {
   const fetchRoutes = async () => {
     if (!authToken) return toast.error("Authentication token missing.");
     try {
-      const response = await fetch("https://bus-cdc-1.onrender.com/routes", {
+      const response = await fetch("https://bus-cdc-2.onrender.com/routes", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
 

@@ -12,7 +12,7 @@ export const AllRouteProvider = ({ children }) => {
   // Fetch all routes
   const fetchRoutes = async () => {
     try {
-      const response = await axios.get("https://bus-cdc-1.onrender.com/routes");
+      const response = await axios.get("https://bus-cdc-2.onrender.com/routes");
       setRoutes(response.data);
     } catch (error) {
       console.error("Error fetching routes:", error);
@@ -23,7 +23,7 @@ export const AllRouteProvider = ({ children }) => {
   const addRoute = async (routeData) => {
     try {
       const authToken = sessionStorage.getItem("token"); 
-      const response = await axios.post("https://bus-cdc-1.onrender.com/routes", routeData, {
+      const response = await axios.post("https://bus-cdc-2.onrender.com/routes", routeData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
@@ -38,7 +38,7 @@ export const AllRouteProvider = ({ children }) => {
   const updateRoute = async (routeId, updatedData) => {
     try {
       const authToken = sessionStorage.getItem("token");
-      const response = await axios.put(`https://bus-cdc-1.onrender.com/routes/${routeId}`, updatedData, {
+      const response = await axios.put(`https://bus-cdc-2.onrender.com/routes/${routeId}`, updatedData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
@@ -53,7 +53,7 @@ export const AllRouteProvider = ({ children }) => {
   const deleteRoute = async (routeId) => {
     try {
       const authToken = sessionStorage.getItem("token");
-      await axios.delete(`https://bus-cdc-1.onrender.com/routes/${routeId}`, {
+      await axios.delete(`https://bus-cdc-2.onrender.com/routes/${routeId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

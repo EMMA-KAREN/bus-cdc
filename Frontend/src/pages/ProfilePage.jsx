@@ -46,7 +46,7 @@ const ProfilePage = () => {
     };
 
     try {
-      const response = await fetch("https://bus-cdc-1.onrender.com/user/update", {
+      const response = await fetch("https://bus-cdc-2.onrender.com/user/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const ProfilePage = () => {
     if (window.confirm("Are you sure you want to delete your account?")) {
       setLoading(true);  // Set loading state
       try {
-        const response = await fetch("https://bus-cdc-1.onrender.com/user/delete_account", {
+        const response = await fetch("https://bus-cdc-2.onrender.com/user/delete_account", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
