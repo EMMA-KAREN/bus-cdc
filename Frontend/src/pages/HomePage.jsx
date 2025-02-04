@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "./Navbar";
+
 
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
-     
+ 
       {/* Hero Section */}
       <header className="bg-blue-600 text-white py-20 text-center">
         <h1 className="text-5xl font-bold">Welcome to the Booking System</h1>

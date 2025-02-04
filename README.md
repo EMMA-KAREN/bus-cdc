@@ -17,21 +17,39 @@ The Booking System is designed to efficiently manage appointments, including boo
 
 The backend exposes the following RESTful endpoints for interaction:
 
-### Bookings
+## User Stories
 
-- **POST /bookings**: Create a new booking.
-- **GET /bookings**: List all bookings.
-- **GET /bookings/{id}**: Retrieve booking details.
-- **PUT /bookings/{id}**: Update booking details.
-- **DELETE /bookings/{id}**: Delete a booking.
+### User Management
+- **Add a New User:** Input personal details (name, email, phone number) and create a user account.
+- **View Users:** List all users along with their associated bookings.
+- **Update User Details:** Modify details like email or address.
+- **Delete a User:** Remove a user by their ID.
 
-### Users
+### Bus Management
+- **Add a New Bus:** Input details such as bus type, capacity, and operator.
+- **View Buses:** List all buses with their registration numbers.
+- **Update Bus Details:** Modify bus details such as capacity or amenities.
+- **Delete a Bus:** Remove a bus by its ID.
 
-- **POST /users**: Create a new user.
-- **GET /users**: List all users.
-- **GET /users/{id}**: Retrieve user details.
-- **PUT /users/{id}**: Update user details.
-- **DELETE /users/{id}**: Delete a user.
+### Route Management
+- **Add a New Route:** Specify origin, destination, and distance.
+- **View Routes:** List all routes along with estimated durations.
+- **Update Route Details:** Change route specifics such as distance or origin.
+- **Delete a Route:** Remove a route by its ID.
+
+### Schedule Management
+- **Add a New Schedule:** Link a bus and route with departure and arrival times.
+- **View Schedules:** Display schedules along with bus and route details.
+- **Update Schedule Details:** Modify fare, departure time, or other schedule attributes.
+- **Delete a Schedule:** Remove a schedule by its ID.
+
+### Booking Management
+- **Create a Booking:** Link a user to a schedule, selecting seat numbers and confirming the booking.
+- **View Bookings:** List all bookings with their statuses (e.g., Confirmed, Pending).
+- **Update Booking Details:** Modify seat numbers or booking status.
+- **Cancel a Booking:** Change the status of a booking to "Cancelled."
+
+
 
 ### Frontend (React)
 - **User-Friendly Interface**: Responsive design suitable for desktop and mobile users.
