@@ -40,3 +40,69 @@
 .read-the-docs {
   color: #888;
 }
+
+.seat-btn {
+  margin: 5px;
+  padding: 10px;
+  background-color: #884545;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.seat-btn.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.seat-btn:hover {
+  background-color: #ddd;
+}
+.bus-btn.selected {
+  background-color: #007bff;
+  color: white;
+}
+.seat-btn {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #333;
+  background-color: white;
+  cursor: pointer;
+}
+
+.seat-btn.selected {
+  background-color: green;
+  color: white;
+}
+
+
+.status-confirmed {
+  color: green;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-cancelled {
+  color: red;
+  font-weight: bold;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.card-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  background-color: #fbcfe8 !important;
+}
